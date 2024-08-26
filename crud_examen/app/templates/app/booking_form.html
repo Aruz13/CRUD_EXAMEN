@@ -1,0 +1,65 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Booking Form{% endblock %}
+
+{% block content %}
+<h1>{{ form.instance.pk|yesno:"Edit Booking,Add New Booking" }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.room}}
+    </div>
+    <div class="mb-3">
+        {{ form.user }}
+    </div>
+    <div class="mb-3">
+        <label for="start_time" class="form-label">Start Time</label>
+        <input type="datetime-local" name="start_time" id="start_time" class="form-control" required>
+    </div>
+    <div class="mb-3" id = "end_form" style="display: block;">
+        <label for="end_time" class="form-label">Duration</label>
+        <div class="mb-3">
+            <label for="hours" class="form-label">Hours</label>
+            <input type="number" id="hours" name="hours" class="form-control" min="0" max="2" step="1" required>
+        </div>
+        <div class="mb-3" id = 'minB' style="display: block;">
+            <label for="minutes" class="form-label">Minutes</label>
+            <input type="number" id="minutes" name="minutes" class="form-control" min="0" max="59" step="1" required>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+<script>
+
+    document.getElementById('hours').addEventListener('change', function() {
+        var hours = parseInt(document.getElementById('hours').value, 10);
+        var minutes = parseInt(document.getElementById('minutes').value, 10);
+
+        if (hours === 2){
+            document.getElementById('minB').style.display = 'none';
+        } else if (hours === 2 && minutes > 0) {
+            alert('If you select 2 hours, minutes should be 0.');
+            event.preventDefault();
+        } else if (hours < 0 || hours > 2 || minutes < 0 || minutes > 59) {
+            alert('Please enter valid hours and minutes.');
+            event.preventDefault();
+        } else if (hours === 0 && minutes < 1) {
+            alert('Duration should be at least 1 minute.');
+            event.preventDefault();
+        }
+        //console.log("Hello, world!");
+        if (hours === 2){
+            document.getElementById('minB').value = '0';
+            document.getElementById('minB').style.display = 'none';
+        }else{
+            document.getElementById('minB').style.display = 'block';
+        }
+    });
+</script>
+
+
+{% endblock %}

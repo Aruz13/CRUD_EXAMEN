@@ -3,6 +3,10 @@ from django.views import View
 from .models import Room, Booking, User
 from .forms import RoomForm, BookingForm, UserForm
 
+class HomePageView(View):
+    def get(self, request):
+        return render(request, 'app/base.html')
+
 # Vistas para Salas de Juntas
 class RoomListView(View):
     def get(self, request):
@@ -49,7 +53,7 @@ class RoomDeleteView(View):
 class BookingListView(View):
     def get(self, request):
         bookings = Booking.objects.all()
-        return render(request, 'app/booking_list.html', {'bookings': bookings})
+        return render(request, 'app/bookings_list.html', {'bookings': bookings})
 
 class BookingCreateView(View):
     def get(self, request):
@@ -91,7 +95,7 @@ class BookingDeleteView(View):
 class UserListView(View):
     def get(self, request):
         users = User.objects.all()
-        return render(request, 'app/user_list.html', {'users': users})
+        return render(request, 'app/users_list.html', {'users': users})
 
 class UserCreateView(View):
     def get(self, request):
