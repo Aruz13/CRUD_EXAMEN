@@ -23,8 +23,8 @@ Este proyecto es un sistema de reservas de salas de juntas que permite a los usu
 1. **Clona el repositorio:**
 
    ```bash
-   git clone https://github.com/tuusuario/nombre-del-repo.git
-   cd nombre-del-repo
+   git clone https://github.com/Aruz13/CRUD_EXAMEN.git
+   cd CRUD_EXAMEN
    ```
 2. **Crea y activa un entorno virtual:**
 
@@ -33,12 +33,17 @@ Este proyecto es un sistema de reservas de salas de juntas que permite a los usu
    source venv/bin/activate  # En Windows: venv\Scripts\activate
    ```
 3. **Instala las dependencias:**
+Crea un archivo txt con lo siguiente:
+Django>=3.2,<4.0
+pytz>=2021.1
+sqlparse>=0.4.1
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Realiza las migraciones de la base de datos:**
+
+5. **Realiza las migraciones de la base de datos:**
 
 ```bash
 python manage.py migrate
