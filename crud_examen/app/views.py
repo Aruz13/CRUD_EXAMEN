@@ -1,11 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.utils import timezone
 from .models import Room, Booking, User
 from .forms import RoomForm, BookingForm, UserForm
 
 class HomePageView(View):
     def get(self, request):
-        return render(request, 'app/base.html')
+        upcoming_meetings = Booking.objects.all().order_by('start_time')
+        future_reservations = Booking.objects.all().order_by('start_time')
+        context = {
+            'upcoming_meetings': upcoming_meetings,
+            'future_reservations': future_reservations,
+        }
+        print(context)
+        return render(request, 'app/home.html', context)
 
 # Vistas para Salas de Juntas
 class RoomListView(View):

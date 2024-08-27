@@ -20,6 +20,11 @@
         <label for="end_time" class="form-label">End Time</label>
         <input type="datetime-local" name="end_time" id="end_time" class="form-control" required>
     </div>
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
     <button type="submit" class="btn btn-success">Save</button>
     <a href="{% url 'booking_list' %}" class="btn btn-secondary">Cancel</a>
 </form>

@@ -1,0 +1,101 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Meeting Room Booking System</h1>
+
+<div class="row">
+    <!-- Juntas más cercanas -->
+    <div class="col-md-6">
+        <h2>Upcoming Meetings</h2>
+        <div class="row" id="meetings-container">
+            {% for meeting in upcoming_meetings %}
+            <div class="col-md-6">
+                <div class="sticky-note" data-start="{{ meeting.start_time|date:"c" }}" data-end="{{ meeting.end_time|date:"c" }}" id="meeting-{{ forloop.counter }}">
+                    <h4>{{ meeting.room.name }}{% if now %} <span class="badge bg-danger">NOW</span>{% endif %}</h4>
+                    <p><strong>Time:</strong> {{ meeting.start_time|date:"d M Y, H:i" }} - {{ meeting.end_time|date:"H:i" }}</p>
+                    <p><strong>Reserved by:</strong> {{ meeting.user.name }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Lista de futuras reservas -->
+    <div class="col-md-6">
+        <h2>Future Reservations</h2>
+        <ul class="list-group" id="reservations-container">
+            {% for reservation in future_reservations %}
+            <li class="list-group-item" data-start="{{ reservation.start_time|date:"c" }}" data-end="{{ reservation.end_time|date:"c" }}" id="reservation-{{ forloop.counter }}">
+                <strong>Room:</strong> {{ reservation.room.name }}<br>
+                <strong>Time:</strong> {{ reservation.start_time|date:"d M Y, H:i" }} - {{ reservation.end_time|date:"H:i" }}<br>
+                <strong>Reserved by:</strong> {{ reservation.user.name }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<style>
+    .sticky-note {
+        background-color: #fdfd96;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        font-family: 'Comic Sans MS', sans-serif;
+    }
+    .sticky-note.now {
+        background-color: #f8d7da;
+    }
+    .badge.bg-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var now = new Date();
+
+        document.querySelectorAll('.sticky-note').forEach(function(note) {
+            
+            var dateString = note.getAttribute('data-start')
+            var end = note.getAttribute('data-end')
+            // Extraer año, mes, día, hora y minuto usando substrings
+            const year = dateString.substring(0, 4);
+            const month = dateString.substring(5, 7);
+            const day = dateString.substring(8, 10);
+            const hours = dateString.substring(11, 13);
+            const minutes = dateString.substring(14, 16);
+            const hours3 = end.substring(11, 13);
+            const minutes3 = end.substring(14, 16);
+
+            // Extraer componentes del objeto Date
+            const year2 = now.getFullYear();
+            const month2 = now.getMonth() + 1; // getMonth() devuelve el mes en base 0 (enero es 0)
+            const day2 = now.getDate();
+            const hours2 = now.getHours();
+            const minutes2 = now.getMinutes();
+
+            const startDate = new Date();
+            startDate.setHours(hours, minutes, 0, 0);
+            const compareDate = new Date();
+            compareDate.setHours(hours2, minutes2, 0, 0);
+            const endDate = new Date();
+            endDate.setHours(hours3, minutes3, 0, 0);
+
+            const isInRange = compareDate >= startDate && compareDate <= endDate;
+
+            if(year == year2 && month == month2 && day == day2 && isInRange){
+                console.log("DEntro del rango")
+                note.classList.add('now');
+                note.querySelector('h4').innerHTML += ' <span class="badge bg-danger">NOW</span>';
+            }
+            
+        });
+    });
+</script>
+
+{% endblock %}
