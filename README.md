@@ -56,7 +56,7 @@ python manage.py runserver
 
 Ahora puedes acceder a la aplicación en http://127.0.0.1:8000/.
 
-##Uso
+## Uso
 Funcionalidades Principales
 Home Page: Muestra las próximas reuniones y futuras reservas.
 CRUD para Salas: Permite crear, editar y eliminar salas de juntas.
@@ -66,7 +66,7 @@ Finalizar Reuniones: Los usuarios pueden finalizar reuniones manualmente desde l
 Eliminación Automática de Reuniones Caducadas: Las reuniones pasadas se eliminan automáticamente cuando se actualiza o abre la página.
 
 
-##Agregar Datos de Prueba
+## Agregar Datos de Prueba
 Un botón en la Home Page permite agregar automáticamente 10 registros en cada una de las tablas User y Room, debido a que no se sabe la fecha en la que se probara, no es posible crear valores aleatorios que vayan a ser utiles. 
 
 ##Aspectos Importantes
