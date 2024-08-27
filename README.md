@@ -69,7 +69,7 @@ Eliminación Automática de Reuniones Caducadas: Las reuniones pasadas se elimin
 ## Agregar Datos de Prueba
 Un botón en la Home Page permite agregar automáticamente 10 registros en cada una de las tablas User y Room, debido a que no se sabe la fecha en la que se probara, no es posible crear valores aleatorios que vayan a ser utiles. 
 
-##Aspectos Importantes
+## Aspectos Importantes
 Verificación de Reuniones Caducadas: Cada vez que se carga o actualiza la página, se verifica si hay reuniones caducadas. Si se encuentran, se eliminan automáticamente.
 Validación de Formularios: Si ocurre un error al enviar un formulario (como un correo electrónico duplicado), se muestra un mensaje de error al usuario.
 
