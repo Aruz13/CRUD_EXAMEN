@@ -12,10 +12,11 @@
         <div class="row" id="meetings-container">
             {% for meeting in upcoming_meetings %}
             <div class="col-md-6">
-                <div class="sticky-note" data-start="{{ meeting.start_time|date:"c" }}" data-end="{{ meeting.end_time|date:"c" }}" id="meeting-{{ forloop.counter }}">
+                <div class="sticky-note" data-id="{{ meeting.id }}" data-start="{{ meeting.start_time|date:"c" }}" data-end="{{ meeting.end_time|date:"c" }}" id="meeting-{{ forloop.counter }}">
                     <h4>{{ meeting.room.name }}{% if now %} <span class="badge bg-danger">NOW</span>{% endif %}</h4>
                     <p><strong>Time:</strong> {{ meeting.start_time|date:"d M Y, H:i" }} - {{ meeting.end_time|date:"H:i" }}</p>
                     <p><strong>Reserved by:</strong> {{ meeting.user.name }}</p>
+                    <a href="{% url 'booking_delete2' meeting.pk %}" class="btn btn-danger btn-sm">Finish</a>
                 </div>
             </div>
             {% endfor %}
@@ -52,6 +53,9 @@
     .badge.bg-danger {
         color: #721c24;
         background-color: #f8d7da;
+    }
+    .btn-finish {
+        margin-top: 10px;
     }
 </style>
 
@@ -93,8 +97,11 @@
                 note.classList.add('now');
                 note.querySelector('h4').innerHTML += ' <span class="badge bg-danger">NOW</span>';
             }
+
+            
             
         });
+        
     });
 </script>
 

@@ -7,10 +7,14 @@
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
+        <label>Room</label>
         {{ form.room}}
+        <a href="{% url 'room_create2' %}" class="btn btn-secondary">New Room</a>
     </div>
     <div class="mb-3">
+        <label>User</label>
         {{ form.user }}
+        <a href="{% url 'user_create2' %}" class="btn btn-secondary">New User</a>
     </div>
     <div class="mb-3">
         <label for="start_time" class="form-label">Start Time</label>

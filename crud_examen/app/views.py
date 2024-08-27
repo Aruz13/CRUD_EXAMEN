@@ -33,6 +33,18 @@ class RoomCreateView(View):
             return redirect('room_list')
         return render(request, 'app/form.html', {'form': form})
 
+class RoomCreateView2(View):
+    def get(self, request):
+        form = RoomForm()
+        return render(request, 'app/form.html', {'form': form})
+
+    def post(self, request):
+        form = RoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('booking_create')
+        return render(request, 'app/form.html', {'form': form})
+
 class RoomUpdateView(View):
     def get(self, request, pk):
         room = get_object_or_404(Room, pk=pk)
@@ -72,7 +84,7 @@ class BookingCreateView(View):
         form = BookingForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('booking_list')
+            return redirect('base')
         return render(request, 'app/booking_form.html', {'form': form})
 
 class BookingUpdateView(View):
@@ -98,6 +110,16 @@ class BookingDeleteView(View):
         booking = get_object_or_404(Booking, pk=pk)
         booking.delete()
         return redirect('booking_list')
+    
+class BookingDeleteView2(View):
+    def get(self, request, pk):
+        booking = get_object_or_404(Booking, pk=pk)
+        return render(request, 'app/booking_confirm_delete2.html', {'booking': booking})
+
+    def post(self, request, pk):
+        booking = get_object_or_404(Booking, pk=pk)
+        booking.delete()
+        return redirect('base')
 
 # Vistas para Usuarios
 class UserListView(View):
@@ -115,6 +137,18 @@ class UserCreateView(View):
         if form.is_valid():
             form.save()
             return redirect('user_list')
+        return render(request, 'app/user_form.html', {'form': form})
+    
+class UserCreateView2(View):
+    def get(self, request):
+        form = UserForm()
+        return render(request, 'app/user_form.html', {'form': form})
+
+    def post(self, request):
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('booking_create')
         return render(request, 'app/user_form.html', {'form': form})
 
 class UserUpdateView(View):
