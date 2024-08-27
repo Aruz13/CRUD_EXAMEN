@@ -5,6 +5,11 @@
 {% block content %}
 <h1>Welcome to the Meeting Room Booking System</h1>
 
+<div class="mb-3">
+    <a href="{% url 'booking_create' %}" class="btn btn-primary">Create Reservation</a>
+    <a href="{% url 'populate_db' %}" class="btn btn-primary">Populate Database (only user and room)</a>
+</div>
+
 <div class="row">
     <!-- Juntas más cercanas -->
     <div class="col-md-6">
@@ -16,7 +21,9 @@
                     <h4>{{ meeting.room.name }}{% if now %} <span class="badge bg-danger">NOW</span>{% endif %}</h4>
                     <p><strong>Time:</strong> {{ meeting.start_time|date:"d M Y, H:i" }} - {{ meeting.end_time|date:"H:i" }}</p>
                     <p><strong>Reserved by:</strong> {{ meeting.user.name }}</p>
-                    <a href="{% url 'booking_delete2' meeting.pk %}" class="btn btn-danger btn-sm">Finish</a>
+                    <a href="{% url 'booking_delete2' meeting.pk %}" class="btn btn-danger btn-sm finish" id="finish" style="display: block;">Finish</a>
+                    <a href="{% url 'booking_update' meeting.pk %}" class="btn btn-warning btn-sm edit" id="edit" style="display: block;">Edit</a>
+                    <a href="{% url 'booking_delete' meeting.pk %}" class="btn btn-danger btn-sm delete" id="delete" style="display: block;">Delete</a>
                 </div>
             </div>
             {% endfor %}
@@ -32,6 +39,10 @@
                 <strong>Room:</strong> {{ reservation.room.name }}<br>
                 <strong>Time:</strong> {{ reservation.start_time|date:"d M Y, H:i" }} - {{ reservation.end_time|date:"H:i" }}<br>
                 <strong>Reserved by:</strong> {{ reservation.user.name }}
+                <div>
+                <a href="{% url 'booking_update' reservation.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'booking_delete' reservation.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
             </li>
             {% endfor %}
         </ul>
@@ -92,10 +103,23 @@
 
             const isInRange = compareDate >= startDate && compareDate <= endDate;
 
+            
+            var finishBtn = note.querySelector('.finish');
+            var editBtn = note.querySelector('.edit');
+            var deleteBtn = note.querySelector('.delete');
+
+
             if(year == year2 && month == month2 && day == day2 && isInRange){
                 console.log("DEntro del rango")
                 note.classList.add('now');
                 note.querySelector('h4').innerHTML += ' <span class="badge bg-danger">NOW</span>';
+                finishBtn.style.display = 'block';
+                editBtn.style.display = 'none';
+                deleteBtn.style.display = 'none';
+            }else{
+                finishBtn.style.display = 'none';
+                editBtn.style.display = 'block';
+                deleteBtn.style.display = 'block';
             }
 
             

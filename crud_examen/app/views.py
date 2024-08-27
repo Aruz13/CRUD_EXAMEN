@@ -1,18 +1,34 @@
+import random
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.utils import timezone
+from datetime import datetime
+import pytz
 from .models import Room, Booking, User
 from .forms import RoomForm, BookingForm, UserForm
 
 class HomePageView(View):
     def get(self, request):
         upcoming_meetings = Booking.objects.all().order_by('start_time')
-        future_reservations = Booking.objects.all().order_by('start_time')
+        
+        now = datetime.now()
+        now = now.replace(tzinfo=pytz.UTC)
+        #print(now)
+        for meetin in upcoming_meetings:
+            #dateend = datetime.fromisoformat(meetin.end_time)
+            print(meetin.end_time,"<",now,"=",(meetin.end_time<now))
+            if meetin.end_time<now:
+                booking = get_object_or_404(Booking, pk=meetin.pk)
+                booking.delete()
+
+
+        upcoming_meetings = Booking.objects.filter(start_time__date=now).order_by('start_time')
+        future_reservations = Booking.objects.filter(start_time__date__gt = now).order_by('start_time')
         context = {
             'upcoming_meetings': upcoming_meetings,
             'future_reservations': future_reservations,
         }
-        print(context)
+        #print(context)
         return render(request, 'app/home.html', context)
 
 # Vistas para Salas de Juntas
@@ -174,3 +190,31 @@ class UserDeleteView(View):
         user = get_object_or_404(User, pk=pk)
         user.delete()
         return redirect('user_list')
+    
+
+class PopulateDBView(View):
+    def get(self, request):
+        # Crear 10 usuarios
+        for i in range(10):
+            User.objects.create(
+                name=f'User {i + 1}',
+                email=f'user{i + 1}@example.com',
+                phone=f'12345678{i + 1}'
+            )
+
+        # Crear 10 salas
+        for i in range(10):
+            Room.objects.create(
+                name=f'Room {i + 1}',
+                location=f'Suc {i + 1}',
+                capacity=random.randint(5, 20)  # Ejemplo de capacidad aleatoria
+            )
+
+        # Crear 10 reservas
+        users = User.objects.all()
+        rooms = Room.objects.all()
+        now = timezone.now()
+
+        
+
+        return redirect('base')

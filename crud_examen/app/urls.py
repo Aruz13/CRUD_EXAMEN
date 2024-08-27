@@ -2,11 +2,12 @@ from django.urls import path
 from .views import (
     RoomListView, RoomCreateView, RoomCreateView2, RoomUpdateView, RoomDeleteView,
     BookingListView, BookingCreateView, BookingUpdateView, BookingDeleteView,
-    UserListView, UserCreateView, UserCreateView2, UserUpdateView, UserDeleteView, HomePageView, BookingDeleteView2
+    UserListView, UserCreateView, UserCreateView2, UserUpdateView, UserDeleteView, HomePageView, BookingDeleteView2, PopulateDBView,
 )
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='base'),
+    path('populate_db/', PopulateDBView.as_view(), name='populate_db'),
     # URLs para Salas de Juntas
     path('rooms/', RoomListView.as_view(), name='room_list'),
     path('rooms/create/', RoomCreateView.as_view(), name='room_create'),
